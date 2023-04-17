@@ -3,16 +3,21 @@ package com.example.ttsdemo;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
+import com.github.paolorotolo.appintro.AppIntro;
+import com.github.paolorotolo.appintro.AppIntroFragment;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -40,6 +45,21 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        // 判断是否是第一次开启应用
+        boolean isFirstOpen = SpUtils.getBoolean(this, AppConstants.FIRST_OPEN);
+//        Log.d(TAG, "onCreate: " + isFirstOpen);
+        System.out.println("onCreate: " + isFirstOpen);
+        // 如果是第一次启动，则先进入功能引导页
+        if (!isFirstOpen) {
+            Intent intent = new Intent(this, AppIntroActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
+
 
         initLanguageList();
 
